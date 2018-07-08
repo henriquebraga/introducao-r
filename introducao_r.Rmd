@@ -1,0 +1,266 @@
+---
+title: "Introdução ao R"
+author: "Henrique Braga"
+date: "June 21, 2018"
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Breve Histórico
+
+A linguagem R foi criada em 1991 por Ross Ihaka e Robert Gentleman
+(publicado em 1993) no departamento de estatísticas da
+universidade de Auckland
+
+## Instalação
+
+### R
+
+#### Windows
+
+https://cran.r-project.org/bin/windows/base/
+
+#### Linux
+
+```shell
+sudo add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/'
+sudo apt-get update
+sudo apt-get install r-base
+
+```
+
+Vamos então brincar com algumas operações básicas em R
+
+### RStudio
+
+https://www.rstudio.com/products/rstudio/download/
+
+## Hello World
+
+Vamos realizar nosso primeiro Hello World no R
+
+```{r hello}
+print('hello world')
+```
+
+### Atribuição
+
+Para uma atribuição simples em R, podemos fazer de duas formas:  ou `=`, como a maioria das linguagens de programação ou utilizando utilizando o sinal `<-`. 
+
+```{r assignment}
+r_language <- 'Hello R'
+print(r_language)
+r_language_with_equals = 'Hello R'
+```
+
+A diferença entre eles é simplesmente o escopo. Vamos entender melhor com um exemplo simples: 
+
+```{r assignment_difference}
+a <- 1
+f <- function(a) return(TRUE)
+f <- f(a <- a + 1); a
+
+b = 1
+f <- function(b) return(TRUE)
+f <- f(b <- b + 1); b
+
+```
+
+Vamos detalhar o que foi feito acima:
+
+1. Atribuiu-se utilizando o operador `<-` com o valor 1
+2. Criou-se uma variável `f` que na verdade é um "ponteiro" de função que recebe um parâmetro e retorna `TRUE` independente do resultado
+3. Executou-se a função passando o parâmetro incrementando o valor retornando `TRUE` e imprimindo o valor de a logo em seguida. Note que o valor continua sendo `1`
+
+Nas três linhas posteriores, são realizados os mesmos procedimentos, porém com duas diferenças: foi utilizado o operador `=` e o valor `b` ao final incrementou em 1!
+
+### Funções
+
+Funções são muito úteis em qualquer linguagem de programação e no R não é diferente. Evita duplicidade, pois isolam determinada lógica em um só lugar, além de simplificar a legibilidade do código.
+
+
+```{r function}
+add_numbers <- function(a,b) a + b
+print(add_numbers(3, 2))
+```
+
+Acima, estamos:
+
+1. Atribuindo à variável `add_numbers` uma função que recebe os parâmetros `a` e `b`. Nela,dentro dela, estão sendo adicionados `a` e `b` e este valor é retornado.
+
+2. Chamando a função `add_numbers` com os parâmetros `3` e `2`. Ao executar, é retornado o valor 5. 
+
+Outra coisa interessante sobre funções em R que valem a pena ser citados: os valores são passados por cópia e não por referência. Mas o que isso quer dizer?
+
+```{r scope_function}
+param = 'original parameter'
+validate_if_value_change_outside_function <- function(value) value = 'Changing parameter value inside function'
+
+validate_if_value_change_outside_function(param)
+print(param)
+```
+
+O exemplo acima descreve o significado:
+
+1. A variável `param` é atribuída com o valor `'original parameter'`
+2. É criada uma função que recebe um parâmetro e faz uma atribuição dentro do escopo da função
+3. Ao validar o valor da variável `param`, percebe-se que está com o valor `'original parameter'` (atribuído fora da função) e não com o valor `'Changing parameter value inside function'`
+
+## Documentação
+
+O R possui uma documentação caso precise consultar funções "built-in" ou de bibliotecas terceiras (se estiverem documentadas)
+
+```{r help}
+help(list)
+```
+
+Ao executar o comando acima, será aberto uma tela a qual poderá obter informações tais como descrição, parâmetros dentre outras coisas que esteja em dúvida sobre o elemento.
+
+## Alguns tipos de variáveis no R
+
+Abaixo serão descritos alguns tipos de variáveis no R.
+
+### Lógico (Logical)
+
+Pode assumir os valores `TRUE` e `FALSE`, sendo o primeiro para quando alguma comparação for verdadeira e o segundo caso seja falsa. Vale lembrar que para expressões lógicas podemos utilizar os operadores `&` e `|`. 
+
+O `&` pode ser lido como "E", ou seja, para a expressão ser verdadeira, todas as condições precisam ser verdadeiras.  
+
+O `|` pode ser lido como "OU", ou seja, para a expressão ser verdadeira, basta q8e uma das condições sejam verdadeiras.
+
+```{r logical_example}
+print('--------')
+print('TRUE variable')
+true_variable = TRUE
+print(true_variable)
+print('--------')
+
+print('--------')
+false_variable = FALSE
+
+print('--------')
+true_condition = 2 > 1 & 5 < 15
+print(true_condition)
+
+false_condition = 12 < 0 | 0 > 2
+print(false_condition)
+```
+
+### Inteiro (Integer)
+
+Valores que representam números inteiros (0,1,2,3,4,5,-1,-2 etc)
+
+#### Curiosidades
+
+Para garantir que a variável que está sendo atribuída será de fato um inteiro, podemos utilizara função `as.integer`
+
+```{r as.integer_example}
+integer_variable = as.integer(5.5)
+print(integer_variable)
+```
+
+Ao se passar valores lógicos, caso `TRUE` é convertido para 1. Já `FALSE`, é convertido para 0.
+
+```{r as.integer_example_with_boolean}
+print(as.integer(TRUE))
+print('----------')
+print(as.integer(FALSE))
+```
+
+### Complexo (Complex)
+
+Representa matematicamente um valor imaginário.
+
+```{r complex_example}
+print('--------')
+complex_variable = 10 + 4i
+print(complex_variable)
+```
+
+### Texto (Character)
+
+Representa os valores textuais.
+
+#### Curiosidade
+
+Para garantir que a variável que está sendo atribuída será de fato texto, podemos utilizara função `as.character`
+
+```{r as.character_example}
+print(as.character(10.5))
+```
+
+## Algumas funções builtins
+
+O R já vem com diversas funções builtins que facilitam no dia a dia.
+
+Vamos conhecer algumas delas
+
+### Funções Numéricas
+
+Para obter o valor absoluto de um número:
+
+```{r abs}
+a = abs(-2.5)
+print(a)
+```
+
+Para obter a raíz quadrada de um número:
+
+```{r sqrt}
+a = sqrt(4)
+print(a)
+```
+
+### Funções para manipulação de arquivo
+
+Para criar um arquivo
+
+```{r file.create}
+file.create("my_file")
+file.append("my_file", rep("B", 10))
+```
+
+Para validar se um arquivo existe:
+
+```{r file.exists}
+file.exists("my_file")
+```
+### Exercícios
+
+Criar variáveis com os seguintes tipos no R: Lógico, Inteiro, Numérico, Texto, Imaginário
+
+```{r exercise_primitive_data_types}
+print('Boolean data type')
+bool_variable = TRUE
+print(bool_variable)
+print('-------')
+
+print('Integer data type')
+
+int_variable = 1
+print(int_variable)
+print('-------')
+
+print('Numeric data type')
+numeric_variable = 3.3
+print(numeric_variable)
+print('-------')
+
+print('Imaginary data type')
+imaginary_variable = sqrt(as.complex(-1))
+print(numeric_variable)
+print('-------')
+
+
+print('String data type')
+text_variable = 'some text'
+print(text_variable)
+print('-------')
+```
