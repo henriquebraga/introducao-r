@@ -1,0 +1,395 @@
+---
+title: "tipos_dados"
+author: "Henrique Braga"
+date: "June 26, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tipos de dados no R
+
+Vamos conhecer alguns dos principais tipos de dados mais utilizados no R (com exceção dos primitivos já explicado na introdução).
+
+### Vetores
+
+```{r boolean_vector}
+bool_vector = c(TRUE, FALSE, TRUE)
+print(bool_vector[1])
+```
+
+```{r integer_vector}
+int_vector = c(1, 2, 3, 4)
+print(int_vector[1])
+```
+
+Para acessar o valor do objeto dentro do vetor, é necessário utilizar o índice correspondente a sua posição no vetor.
+
+Exemplos:
+
+#### Manipulando vetores com índices
+
+Acessando primeira posição do vetor.
+
+```{r access_first_vector_index}
+vector = c('foo', 'bar', 'spam', 'eggs')
+print(vector[1])
+```
+
+Acessando primeira posição do vetor
+
+```{r access_last_vector_index}
+vector = c('foo', 'bar', 'spam', 'eggs')
+print(vector[4])
+```
+
+Retornando todo os elementos do vetor, com exceção do primeiro (note que o índice precisa ser negativo nesse caso).
+
+```{r eliminate_first_position_from_vector}
+vector = c('foo', 'bar', 'spam', 'eggs')
+print(vector[-1])
+```
+
+Retornando todo os elementos do vetor, da primeira à terceira posições no índice.
+
+```{r slice_vector}
+vector = c('foo', 'bar', 'spam', 'eggs')
+print(vector[1:3])
+```
+
+Retornando todo os elementos do vetor, da primeira à terceira posições no índice, porém na ordem invertida (da terceira para a primeira) 
+
+```{r slice_inverted_vector}
+vector = c('foo', 'bar', 'spam', 'eggs')
+print(vector[3:1])
+```
+
+#### Operações com vetores
+
+Vamos ver algumas operações possíveis no R envolvendo vetores.
+
+É possível juntar dois vetores a partir da criação de um outro vetor.
+
+```{r merge_vectors}
+vector = c('foo', 'bar')
+another_vector = c('spam', 'eggs')
+merged_vector = c(vector, another_vector)
+print(merged_vector)
+```
+
+```{r vector_operations}
+vector = c(10, 20)
+another_vector = c(30, 40)
+sum_vectors = vector + another_vector
+print(sum_vectors)
+
+diff_vectors = another_vector - vector
+print(diff_vectors)
+
+vector = 5 * c(10, 20, 30)
+print(vector)
+
+```
+
+Outra utilização possível para vetores é configurar as colunas de um dataframe (não se preocupe, pois será explicado sobre dataframes ainda neste documento).
+
+
+```{r vector_data_frame_columns}
+n = c('Gabriel', 'Luis', 'Fernando', 'Robson') 
+i = c(27, 19, 21, 34)
+s = c('Masculino', 'Masculino', 'Masculino', 'Masculino') 
+df = data.frame(n, i, s)
+colnames(df) <- c("Nome", "Idade", "Sexo")
+df
+
+```
+
+#### Curiosidades
+
+Se criar um vetor com o tipo inteiro e string, todos os itens do vetor serão convertidos para `string`
+
+```{r vector_int_string}
+multi_values_vector = c(1, 'a', 2, 'b')
+print(multi_values_vector)
+```
+
+#### Exercício
+
+Crie um vetor de cinco posições somente com números inteiros ímpares. Dica: Não crie com os números na "mão", utilize a função `seq`
+
+```{r vector_exercise}
+odd_vector = c(seq(from=1, length.out=5, by=2))
+print(odd_vector)
+
+```
+
+### Matrizes
+
+Matrizes podem ser vistas como vetores com duas dimensões (linhas e colunas)
+
+
+Criando uma matriz 1 (linhas) x 3 (colunas). O parâmetro `nrow` diz o número de linha que a matriz deverá criar.
+
+1
+2
+3
+
+```{r create_1x3_matrix}
+matrix_1x1 = matrix(c(1,2,3), nrow=1)
+print(matrix_1x1)
+```
+
+Criando uma matriz 2 (linhas) x 2 (colunas). O parâmetro `ncol` diz o número de colunas que a matriz deverá criar.
+
+1 3  
+2 4
+
+```{r create_matrix}
+matrix_2x2 = matrix(c(1,2,3,4), ncol=2)
+print(matrix_2x2)
+```
+
+```{r matrix_operations}
+matrix = matrix(seq(from=1, length.out=9, by=1), nrow=3, byrow=T)
+another_matrix = matrix(seq(from=9, length.out=9, by=1), nrow=3, byrow=T)
+
+print('Soma')
+print('--------------')
+print( matrix + another_matrix)
+print('--------------')
+
+print('Subtração')
+print('--------------')
+print (another_matrix - matrix)
+print('--------------')
+
+print('Multiplicação')
+print('--------------')
+print (another_matrix * matrix)
+print('--------------')
+
+```
+
+
+#### Operações com matrizes
+
+#### Exercícios
+
+Crie uma matriz 3 (linhas) x 2 (colunas) com os números de 1 a 9. Dica: A função `seq` gera uma sequência de números (`from` representa o valor inicial da sequência, `length.out` representa o valor final e `by` o intervalo). 
+
+```{r matrix_exercise_1}
+matrix_3x2 = matrix(seq(from=1, length.out=6, by=1), ncol=3)
+matrix_3x2
+```
+
+Baseado na sequência de 1 a 6 acima, agora gere uma matriz 2 (linhas) x 3 (colunas)
+
+```{r matrix_exercise_2}
+matrix_2x3 = matrix(seq(from=1, length.out=6, by=1), nrow=2)
+matrix_2x3
+```
+
+
+Crie uma matriz 4 x 4 somente com números pares. Importante, é necessário que a ordem seja por linha. Exemplo:
+
+2 4 6 8
+10 12 14 16
+
+Dica: Utilizar o parâmetro `byrow`
+
+```{r matrix_exercise_3}
+even_matrix = matrix(seq(from=2, length.out=16, by=2), nrow=4, byrow=T)
+print(even_matrix)
+```
+
+Utilizando a matriz acima, converta todos elementos para números ímpares.
+
+```{r matrix_exercise_4}
+even_matrix = 1 + matrix(seq(from=2, length.out=16, by=2), nrow=4)
+print(even_matrix)
+```
+
+
+### Dataframe
+
+Um `dataframe` é muito similar a estrutura de uma matriz (ou uma tabela de um banco de dados). 
+
+Criando um `data.frame`.
+
+```{r data.frame_creation_example}
+nome = c('Gabriel', 'Luis', 'Fernando', 'Robson') 
+idade = c(27, 19, 21, 34) 
+sexo = c('Masculino', 'Masculino', 'Masculino', 'Masculino') 
+df = data.frame(nome, idade, sexo)
+print(df)
+```
+
+O que foi feito basicamente acima:
+1. Criou-se um vetor com os valores cada "coluna" (`nome`, `idade` e `sexo`);
+2. Criou-se um objeto por meio da chamada à `data.frame`, passando os parâmetros;
+
+Como pode ser notado, o resultado da primeira linha no `print` são os nomes da colunas (ou `headers`). Neste caso, utilizou-se como padrão os nomes das próprias variáveis (`nome`, `idade` e `sexo`).
+
+Entretanto, poderíamos utilizar a função `colnames` para configurar o nome das colunas de um dataframe, conforme exemplo abaixo.
+
+```{r data.frame_colnames_example_1}
+abc = c('Gabriel', 'Luis', 'Fernando', 'Robson') 
+def = c(27, 19, 21, 34) 
+ghi = c('Masculino', 'Masculino', 'Masculino', 'Masculino') 
+df = data.frame(abc, def, ghi)
+colnames(df) <- c("Nome", "Idade", "Sexo")
+print(df)
+```
+
+A junção de um `nome`, `idade` e `sexo` seria uma linha (ou `row`), a qual contém os dados sobre determinada pessoa.
+
+Podemos conhecer melhor nosso dataframe com algumas funções como `summary` que mostra dados sobre o mesmo e `head` que pode mostrar as linhas e consequentemente, como o dataframe está estruturado.
+
+```{r data.frame_summary_example}
+abc = c('Gabriel', 'Luis', 'Fernando', 'Robson') 
+def = c(27, 19, 21, 34) 
+ghi = c('Masculino', 'Masculino', 'Masculino', 'Masculino') 
+df = data.frame(abc, def, ghi)
+colnames(df) <- c("Nome", "Idade", "Sexo")
+summary(df)
+head(df, n=1)
+```
+
+Podemos acessar uma informação específica dentro da linha, ou seja: uma célula (ou `cell`)
+
+Para verificar o conteúdo de uma coluna, basta utilizar o nome da coluna.
+
+```{r data.frame_colnames_example_2}
+abc = c('Gabriel', 'Luis', 'Fernando', 'Robson') 
+def = c(27, 19, 21, 34) 
+ghi = c('Masculino', 'Masculino', 'Masculino', 'Masculino') 
+df = data.frame(abc, def, ghi)
+colnames(df) <- c("Nome", "Idade", "Sexo")
+
+df["Nome"]
+```
+
+Para verificar quem é a primeira linha do dataframe:
+
+O R já traz alguns dataframes built-ins. Vamos utilizar o dataframe `mtcars`. Primeiramente, vamos verificar a estrutura do mesmo.
+
+```{r summary_mt_cars}
+summary(mtcars)
+```
+
+```{r head_mt_cars}
+head(mtcars, n=5)
+```
+
+Podemos observar que se trata de informações relacionadas à um carro (milhas por galão cilindros, etc).
+
+Para acessar uma célula, por exemplo, `mpg` (primeira coluna do dataframe) do primeiro carro do dataset (Mazda RX4) com o valor `21` é necessário utilizar o valor [`linha`, `coluna`], ou seja: [1,1]
+
+```{r cell_mtcars}
+mtcars[1,1]
+```
+
+Podemos obter informações de mais de uma coluna. Por exemplo, vamos supor que é necessário somente os valores dos campos `carb` e `cyl` do dataframe. 
+
+Vale lembrar que podemos passar os valores inteiros correspondente ao índice das colunas ou o próprio nome da coluna no dataframe.
+
+```{r multiple_columns_mtcars}
+ mtcars[c('carb', 'cyl')] 
+```
+
+Agora, caso queira acessar uma linha. Por exemplo, vamos supor que precisamos obter a linha com as nformações do segundo carro no dataframe.
+
+```{r row_mtcars}
+ mtcars[5,] 
+```
+
+Pode-se obter mais de uma linha do dataframe passando um vetor como parâmetro ao invés de um valor inteiro.
+
+```{r rows_mtcars}
+ mtcars[c(1,2,3),]
+```
+
+Para obter informações de uma linha de uma coluna, basta utilizar o operador `$`. Imagine que precisamos obter os dados da coluna `mpg` somente para as 3 primeiras linhas de `mtcars`
+
+```{r multiple_columns_mtcars_2}
+ mtcars[c(1,2,3),]$mpg
+```
+
+Também é possível realizar filtros em datasets com a biblioteca `dplyr`.
+
+Carregando e instalando a biblioteca `dplyr`.
+
+```{r configure_dplyr}
+install.packages('dplyr')
+library(dplyr)
+```
+
+Filtrando carros por 6 cilindradas.
+
+```{r filter_example}
+library(dplyr)
+mtcars_filtered_by_mpg <- filter(mtcars,cyl == 6)
+mtcars_filtered_by_mpg
+```
+
+Filtrando carros por mpg e cilindradas.
+
+```{r filter_example_2}
+library(dplyr)
+mtcars_filtered_by_mpg_and_cyl <- filter(mtcars, cyl == 6 & mpg == 21.0)
+print(mtcars_filtered_by_mpg_and_cyl)
+```
+
+Filtrando carros por carb ou cilindradas.
+
+```{r filter_example_3}
+library(dplyr)
+mtcars_filtered_by_cyl_or_carb <- filter(mtcars, cyl == 6 | carb == 1)
+print(mtcars_filtered_by_cyl_or_carb)
+```
+
+Também podemos utilizar o comando `select`, o qual permite selecionar as colunas desejadas.
+
+```{r select_example}
+library(dplyr)
+select(mtcars, cyl, carb)
+```
+
+O comando `arrange` permite ordenar um dataset.
+
+Ordenando o dataset `mtcars` por mpg
+
+```{r arrange_example}
+library(dplyr)
+arrange(mtcars, mpg)
+```
+
+### Pipe
+
+É amplamente utilizado com as funções da biblioteca `dplyr` e funciona passando como primeiro parâmetro.
+
+```{r pipe_example}
+library(dplyr)
+mtcars %>% summary()
+```
+
+Como sabemos, a função `summary` é chamada da seguinte forma: `summary(mtcars)`. Porém , ao se utilizar `pipe`(`%>%`), estamos dizendo: "Ei, utilize o dataset mtcars como primeiro parâmetro para a função `summary`".
+
+Obtendo os campos `cyl` e `mpg` utilizando `pipe`(`%>%`).
+
+```{r pipe_example_2}
+library(dplyr)
+mtcars %>% select(cyl, mpg)
+```
+
+Selecionando os campos `cyl`, `mpg` e `carb`, filtrando por `carb` sendo igual a `1` e ordenando por `cyl` utilizando `pipe`. 
+
+```{r pipe_example_3}
+library(dplyr)
+mtcars %>% filter(carb == 1) %>% select(cyl, mpg, carb) %>% arrange(cyl)
+```
+
+
+
